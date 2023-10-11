@@ -265,6 +265,9 @@ class SuratKeluar extends Component
 
     public function closeModal()
     {
+        if ($this->isEdit) {
+            $this->isEdit = false;
+        }
         $this->resetInputs();
     }
 }

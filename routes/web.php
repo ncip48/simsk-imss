@@ -33,4 +33,7 @@ Route::middleware(['auth'])->group(function () {
             return view('user');
         })->name('user');
     });
+
+    //LOGOUT
+    Route::post('logout', [Login::class, 'logout'])->name('logout');
 });

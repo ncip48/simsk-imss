@@ -6,8 +6,8 @@
             <div class="modal-header">
                 <h5 class="modal-title fw-bold" id="divisiModalLabel">
                     {{ $isView ? 'Lihat' : ($isEdit ? 'Edit' : 'Tambah') }} Surat Keluar {{ $tipe }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">×</span></button>
+                <button type="button" wire:click="closeModal" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
 

@@ -76,9 +76,12 @@
                                             </td>
                                             <td>
                                                 @if (auth()->user()->id == $surat->id_user || auth()->user()->role == 1)
-                                                    <button type="button" wire:click="editSurat({{ $surat->id }})"
-                                                        class="btn btn-sm btn-warning" data-toggle="modal"
-                                                        data-target="#suratModal">Edit</button>
+                                                    @if ($surat->status == 0)
+                                                        <button type="button"
+                                                            wire:click="editSurat({{ $surat->id }})"
+                                                            class="btn btn-sm btn-warning" data-toggle="modal"
+                                                            data-target="#suratModal">Edit</button>
+                                                    @endif
                                                     <button class="btn btn-sm btn-danger"
                                                         wire:click="deleteSurat({{ $surat->id }})"
                                                         data-toggle="modal"

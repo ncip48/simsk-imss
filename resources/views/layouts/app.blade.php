@@ -129,6 +129,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('surat-keluar') }}"
+                                class="nav-link {{ request()->is('surat-keluar') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-envelope"></i>
+                                <p>
+                                    Surat Keluar
+                                </p>
+                            </a>
+                        </li>
+                        {{-- <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-envelope"></i>
                                 <p>
@@ -156,7 +165,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> --}}
                         @if (Auth::user()->role === 1)
                             <li class="nav-item">
                                 <a href="{{ route('divisi') }}"
@@ -177,8 +186,12 @@
                                 </a>
                             </li>
                         @endif
+                        <form action="{{ route('logout') }}" id="logout" method="POST">
+                            @csrf
+                        </form>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a onclick="document.getElementById('logout').submit();" class="nav-link"
+                                style="cursor: pointer">
                                 <i class="nav-icon fa fa-sign-out-alt"></i>
                                 <p>Logout</p>
                             </a>
