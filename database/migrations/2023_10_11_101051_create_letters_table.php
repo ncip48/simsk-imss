@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('uraian');
             $table->integer('id_user');
             $table->string('file')->nullable()->default(null);
+            $table->integer('status')->nullable()->default(0)->comment('0: pending, 1: ada, 2: cancel');
             $table->timestamps();
         });
     }

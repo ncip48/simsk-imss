@@ -23,7 +23,7 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
     Route::get('surat-keluar', function () {
-        echo "Halo";
+        return view('surat-keluar');
     })->name('surat-keluar');
     Route::middleware(['isAdmin'])->group(function () {
         Route::get('divisi', function () {

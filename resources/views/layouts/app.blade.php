@@ -144,13 +144,13 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('surat-keluar', ['type' => 'd1']) }}" class="nav-link">
+                                    <a href="{{ route('surat-keluar', ['type' => 'd2']) }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Direksi D2</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('surat-keluar', ['type' => 'd1']) }}" class="nav-link">
+                                    <a href="{{ route('surat-keluar', ['type' => 'd3']) }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Direksi D3</p>
                                     </a>
