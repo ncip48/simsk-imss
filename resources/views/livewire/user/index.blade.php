@@ -35,7 +35,7 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="example1" class="table table-bordered table-hover">
+                            <table id="" class="table table-bordered table-hover mb-2">
                                 <thead>
                                     <tr>
                                         <th>Nama</th>
@@ -70,6 +70,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{ $users->links('vendor.pagination.bootstrap-4') }}
                         </div>
                         <!-- /.card-body -->
                     </div>

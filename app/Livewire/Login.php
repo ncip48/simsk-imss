@@ -34,7 +34,7 @@ class Login extends Component
         $this->loading = true;
 
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
-            return $this->redirect('/dashboard', navigate: true);
+            return $this->redirect('/dashboard');
         } else {
             $this->dispatch('alert', [
                 'type' => 'error',

@@ -24,12 +24,59 @@
                         @enderror
                     </div>
 
+                    {{-- User Divisi --}}
+                    <div class="form-group mb-3">
+                        <label for="title">Divisi <span class="text-danger">*</span></label>
+                        <select class="form-control" {{ $isView ? 'disabled' : '' }} wire:model="id_divisi">
+                            <option value="">-- Pilih Divisi --</option>
+                            @foreach ($departments as $divisi)
+                                <option value="{{ $divisi->id_divisi }}">{{ $divisi->nama }}</option>
+                            @endforeach
+                        </select>
+                        @error('divisi')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
                     {{-- User Email --}}
                     <div class="form-group mb-3">
                         <label for="title">Email <span class="text-danger">*</span></label>
                         <input type="text" {{ $isView ? 'disabled' : '' }} class="form-control" placeholder="Email"
                             wire:model="email" />
                         @error('email')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    {{-- User Password --}}
+                    <div class="form-group mb-3">
+                        <label for="title">Password <span class="text-danger">*</span></label>
+                        <input type="password" {{ $isView ? 'disabled' : '' }} class="form-control"
+                            placeholder="Password" wire:model="password" />
+                        @error('password')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    {{-- User Role --}}
+                    <div class="form-group mb-3">
+                        <label for="title">Role <span class="text-danger">*</span></label>
+                        <select class="form-control" {{ $isView ? 'disabled' : '' }} wire:model="role">
+                            <option value="">-- Pilih Role --</option>
+                            <option value="1">Admin</option>
+                            <option value="0">User</option>
+                        </select>
+                        @error('role')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    {{-- User No HP --}}
+                    <div class="form-group mb-3">
+                        <label for="title">No HP <span class="text-danger">*</span></label>
+                        <input type="text" {{ $isView ? 'disabled' : '' }} class="form-control" placeholder="No HP"
+                            wire:model="no_hp" />
+                        @error('no_hp')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
