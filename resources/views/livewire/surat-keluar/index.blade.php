@@ -43,7 +43,7 @@
                         <!-- /.card-header -->
                         <div class="card-body">
                             <table id="" class="table table-bordered table-hover mb-2">
-                                <thead>
+                                <thead class="text-center">
                                     <tr>
                                         <th>#</th>
                                         <th>Tanggal Surat</th>
@@ -66,15 +66,17 @@
                                             $tanggal = \Carbon\Carbon::parse($surat->created_at)->isoFormat('D MMMM Y');
                                         @endphp
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $tanggal }}</td>
-                                            <td>{{ $surat->no_surat }}</td>
+                                            <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td class="text-center">{{ $tanggal }}</td>
+                                            <td class="text-center">{{ $surat->no_surat }}</td>
                                             <td>{{ $surat->tujuan }}</td>
                                             <td>{{ $surat->uraian }}</td>
-                                            <td>{{ $surat->kode_divisi }} - {{ $surat->nama_user }}</td>
-                                            <td>{{ $surat->status == 0 ? '' : ($surat->status == 1 ? 'Ada' : 'CANCEL') }}
+                                            <td class="text-center">{{ $surat->kode_divisi }} - {{ $surat->nama_user }}
                                             </td>
-                                            <td>
+                                            <td class="text-center">
+                                                {{ $surat->status == 0 ? '' : ($surat->status == 1 ? 'Ada' : 'CANCEL') }}
+                                            </td>
+                                            <td class="text-center">
                                                 @if (auth()->user()->id == $surat->id_user || auth()->user()->role == 1)
                                                     @if ($surat->status == 0)
                                                         <button type="button"
