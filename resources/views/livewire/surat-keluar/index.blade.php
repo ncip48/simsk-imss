@@ -75,12 +75,15 @@
                                             <td>{{ $surat->status == 0 ? '' : ($surat->status == 1 ? 'Ada' : 'CANCEL') }}
                                             </td>
                                             <td>
-                                                <button type="button" wire:click="editSurat({{ $surat->id }})"
-                                                    class="btn btn-sm btn-warning" data-toggle="modal"
-                                                    data-target="#suratModal">Edit</button>
-                                                <button class="btn btn-sm btn-danger"
-                                                    wire:click="deleteSurat({{ $surat->id }})" data-toggle="modal"
-                                                    data-target="#deleteSuratModal">Hapus</button>
+                                                @if (auth()->user()->id == $surat->id_user || auth()->user()->role == 1)
+                                                    <button type="button" wire:click="editSurat({{ $surat->id }})"
+                                                        class="btn btn-sm btn-warning" data-toggle="modal"
+                                                        data-target="#suratModal">Edit</button>
+                                                    <button class="btn btn-sm btn-danger"
+                                                        wire:click="deleteSurat({{ $surat->id }})"
+                                                        data-toggle="modal"
+                                                        data-target="#deleteSuratModal">Hapus</button>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
