@@ -1,18 +1,18 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    @include('livewire.user.create')
-    @include('livewire.user.delete')
+    @include('livewire.divisi.create')
+    @include('livewire.divisi.delete')
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>User</h1>
+                    <h1>Divisi</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                        <li class="breadcrumb-item active">User</li>
+                        <li class="breadcrumb-item active">Divisi</li>
                     </ol>
                 </div>
             </div>
@@ -26,8 +26,9 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userModal">
-                                Tambah User
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#divisiModal">
+                                Tambah Divisi
                             </button>
                         </div>
                         <!-- /.card-header -->
@@ -35,39 +36,29 @@
                             <table id="" class="table table-bordered table-hover mb-2">
                                 <thead>
                                     <tr>
+                                        <th>Kode</th>
                                         <th>Nama</th>
-                                        <th>Divisi</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th>NO HP</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($users as $user)
+                                    @foreach ($departments as $divisi)
                                         <tr>
-                                            <td>{{ $user->name }}</td>
-                                            <td>{{ $user->nama_divisi }}</td>
-                                            <td>{{ $user->email }}</td>
+                                            <td>{{ $divisi->kode }}</td>
+                                            <td>{{ $divisi->nama }}</td>
                                             <td>
-                                                <span class="badge bg-{{ $user->role === 1 ? 'danger' : 'success' }}">
-                                                    {{ $user->role === 1 ? 'Admin' : 'User' }}
-                                                </span>
-                                            </td>
-                                            <td>{{ $user->no_hp }}</td>
-                                            <td>
-                                                <button type="button" wire:click="editUser({{ $user->id }})"
+                                                <button type="button" wire:click="editDivisi({{ $divisi->id_divisi }})"
                                                     class="btn btn-sm btn-warning" data-toggle="modal"
-                                                    data-target="#userModal">Edit</button>
+                                                    data-target="#divisiModal">Edit</button>
                                                 <button class="btn btn-sm btn-danger"
-                                                    wire:click="deleteUser({{ $user->id }})" data-toggle="modal"
-                                                    data-target="#deleteUserModal">Hapus</button>
+                                                    wire:click="deleteDivisi({{ $divisi->id_divisi }})"
+                                                    data-toggle="modal" data-target="#deleteDivisiModal">Hapus</button>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
-                            {{ $users->links('vendor.pagination.bootstrap-4') }}
+                            {{ $departments->links('vendor.pagination.bootstrap-4') }}
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -82,8 +73,8 @@
     <!-- /.content -->
     <script>
         window.addEventListener('close-modal', event => {
-            $('#userModal').modal('hide');
-            $('#deleteUserModal').modal('hide');
+            $('#divisiModal').modal('hide');
+            $('#deleteDivisiModal').modal('hide');
         });
     </script>
 </div>

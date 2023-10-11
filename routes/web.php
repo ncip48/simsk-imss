@@ -27,7 +27,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('surat-keluar');
     Route::middleware(['isAdmin'])->group(function () {
         Route::get('divisi', function () {
-            echo "Halo";
+            return view('divisi');
         })->name('divisi');
         Route::get('user', function () {
             return view('user');
