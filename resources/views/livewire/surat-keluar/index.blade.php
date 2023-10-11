@@ -28,13 +28,16 @@
                         <div class="card-header">
                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                 data-target="#suratModal">
-                                Tambah Surat Keluar
+                                Tambah Surat Keluar {{ $tipe }}
                             </button>
-                            <button type="button" class="btn btn-primary" wire:click="changeTipe('d1')">
+                            <button type="button" class="btn btn-success" wire:click="changeTipe('d1')">
                                 D1
                             </button>
-                            <button type="button" class="btn btn-primary" wire:click="changeTipe('d2')">
+                            <button type="button" class="btn btn-success" wire:click="changeTipe('d2')">
                                 D2
+                            </button>
+                            <button type="button" class="btn btn-success" wire:click="changeTipe('d3')">
+                                D3
                             </button>
                         </div>
                         <!-- /.card-header -->

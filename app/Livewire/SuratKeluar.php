@@ -97,6 +97,18 @@ class SuratKeluar extends Component
 
     public function storeSurat()
     {
+        //find latest surat keluar, if type 0 then return
+        $latestSurat = ModelsSuratKeluar::where('type', $this->type)->latest()->first();
+        if ($latestSurat) {
+            if ($latestSurat->status == 0) {
+                $this->dispatch('alert', [
+                    'type' => 'error',
+                    'message' => "Surat sebelumnya belum diupload! Mohon hubungi PIC sebelumnya."
+                ]);
+                return;
+            }
+        }
+
         $validatedData = $this->validate();
 
         //get count surat
