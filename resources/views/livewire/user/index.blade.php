@@ -35,6 +35,7 @@
                             <table id="" class="table table-bordered table-hover mb-2">
                                 <thead>
                                     <tr>
+                                        <th>#</th>
                                         <th>Nama</th>
                                         <th>Divisi</th>
                                         <th>Email</th>
@@ -46,6 +47,7 @@
                                 <tbody>
                                     @foreach ($users as $user)
                                         <tr>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $user->nama_divisi }}</td>
                                             <td>{{ $user->email }}</td>

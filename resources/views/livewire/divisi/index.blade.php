@@ -36,6 +36,7 @@
                             <table id="" class="table table-bordered table-hover mb-2">
                                 <thead>
                                     <tr>
+                                        <th>#</th>
                                         <th>Kode</th>
                                         <th>Nama</th>
                                         <th>Aksi</th>
@@ -44,6 +45,7 @@
                                 <tbody>
                                     @foreach ($departments as $divisi)
                                         <tr>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $divisi->kode }}</td>
                                             <td>{{ $divisi->nama }}</td>
                                             <td>
