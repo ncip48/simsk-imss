@@ -22,6 +22,12 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@5/dark.css" />
 
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+        rel="stylesheet">
+
+    @stack('styles')
+
     @livewireStyles
 </head>
 
@@ -254,6 +260,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
+    @stack('scripts')
+
     <script>
         $(function() {
             $("#example1").DataTable({
@@ -296,6 +304,38 @@
             })
         })
     </script>
+
+    <script>
+        document.addEventListener('livewire:available', function() {
+            window.livewire.on('fileChoosen', () => {
+                let inputField = document.getElementById('file')
+                let file = inputField.files[0]
+                let reader = new FileReader();
+                reader.onloadend = () => {
+                    Livewire.emit('fileUpload', reader.result)
+                    console.log(reader.result)
+                }
+                reader.readAsDataURL(file);
+            })
+        });
+    </script>
+
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+    <script>
+        FilePond.registerPlugin(FilePondPluginFileValidateType);
+        FilePond.registerPlugin(FilePondPluginFileValidateSize);
+        FilePond.registerPlugin(FilePondPluginImagePreview);
+    </script>
+    <script>
+        this.addEventListener('pondReset', e => {
+            // console.log(FilePond.destroy(document.querySelector('input[name="filepond"]')))
+            FilePond.destroy(document.querySelector('input[name="filepond"]'))
+        });
+    </script>
+
 
     @livewireScripts
 

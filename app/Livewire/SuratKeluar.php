@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\SuratKeluar as ModelsSuratKeluar;
+use Exception;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -41,12 +42,14 @@ class SuratKeluar extends Component
         'type' => 'required',
         'tujuan' => 'required',
         'uraian' => 'required',
+        'file' => 'nullable|max:2048',
     ];
 
     protected $messages = [
         'type.required' => 'Jenis Surat tidak boleh kosong.',
         'tujuan.required' => 'Tujuan tidak boleh kosong.',
         'uraian.required' => 'Uraian tidak boleh kosong.',
+        'file.max' => 'File maksimal 2MB.',
     ];
 
     public function updated($inputs)
@@ -97,6 +100,8 @@ class SuratKeluar extends Component
 
     public function storeSurat()
     {
+        $validatedData = $this->validate();
+
         //find latest surat keluar, if type 0 then return
         $latestSurat = ModelsSuratKeluar::where('type', $this->type)->latest()->first();
         if ($latestSurat) {
@@ -109,10 +114,16 @@ class SuratKeluar extends Component
             }
         }
 
-        $validatedData = $this->validate();
-
         //get count surat
-        $count = ModelsSuratKeluar::where('type', $validatedData['type'])->count() + 1;
+        $count = ModelsSuratKeluar::where('type', $validatedData['type']);
+
+        if ($count->count() == 0) {
+            $count = 1;
+        } else {
+            //ambil no_surat lalu explode / index 0
+            $count = $count->latest()->first()->no_surat;
+            $count = explode('/', $count)[0] + 1;
+        }
 
         //get romawi bulan ini
         $romawi = $this->createRomawi(date('m'));
@@ -133,12 +144,12 @@ class SuratKeluar extends Component
         if ($surat) {
             $this->dispatch('alert', [
                 'type' => 'success',
-                'message' => "SuratKeluar berhasil ditambahkan!"
+                'message' => "Surat berhasil ditambahkan!"
             ]);
         } else {
             $this->dispatch('alert', [
                 'type' => 'error',
-                'message' => "SuratKeluar gagal ditambahkan!"
+                'message' => "Surat gagal ditambahkan!"
             ]);
         }
 
@@ -155,6 +166,7 @@ class SuratKeluar extends Component
         $this->id_user = null;
         $this->created_at = null;
         $this->status = null;
+        $this->dispatch('pondReset');
     }
 
     public function showSurat(ModelsSuratKeluar $suratKeluar)
@@ -197,6 +209,11 @@ class SuratKeluar extends Component
         }
     }
 
+    public function testUpload()
+    {
+        dd($this->file);
+    }
+
     public function updateSurat()
     {
         $validatedData = $this->validate();
@@ -204,9 +221,11 @@ class SuratKeluar extends Component
         //detect the request->file with name 'file'
         $file = $this->file;
 
+        $random = rand(1, 100000);
+
         if ($file) {
             //set file name with format $no_surat.$file->extension()
-            $fileName = $this->no_surat . '.' . $file->extension();
+            $fileName = $random . '.' . $file->extension();
 
             //store file to public folder with name $fileName
             $file->storeAs('public/docs', $fileName);
@@ -249,6 +268,10 @@ class SuratKeluar extends Component
     {
         if ($this->suratKeluar) {
             $this->suratKeluar->delete();
+            //delete file
+            if ($this->suratKeluar->file) {
+                unlink(storage_path('app/public/docs/' . $this->suratKeluar->file));
+            }
             $this->dispatch('alert', [
                 'type' => 'success',
                 'message' => "Surat berhasil dihapus!"

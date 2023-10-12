@@ -51,16 +51,11 @@
                     </div>
 
                     @if ($isEdit)
-                        {{-- Surat File --}}
-                        <div class="form-group mb-3">
-                            <label for="title">File <span class="text-danger">*</span></label>
-                            <input type="file" {{ $isView ? 'disabled' : '' }} class="form-control"
-                                placeholder="File" wire:model="file" />
-                            @error('file')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
+                        <x-forms.filepond wire:model="file" allowFileTypeValidation allowFileSizeValidation
+                            maxFileSize="4mb" />
                     @endif
+                    {{-- <x-forms.filepond wire:model="image" /> --}}
+
 
                     {{-- Surat PIC --}}
 
@@ -71,7 +66,7 @@
 
                         {{-- If not view then only show the submit button --}}
                         @if (!$isView)
-                            <button type="submit" class="btn btn-success">Simpan</button>
+                            <button type="submit" class="btn btn-success" wire:loading.attr="disabled">Simpan</button>
                         @endif
                     </div>
 
