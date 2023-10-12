@@ -293,4 +293,12 @@ class SuratKeluar extends Component
         }
         $this->resetInputs();
     }
+
+    public function sendReminder(ModelsSuratKeluar $suratKeluar)
+    {
+        return $this->dispatch('alert', [
+            'type' => 'success',
+            'message' => "Reminder berhasil dikirim!"
+        ]);
+    }
 }

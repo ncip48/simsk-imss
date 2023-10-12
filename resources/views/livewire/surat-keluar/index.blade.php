@@ -52,11 +52,14 @@
                                         <th>Uraian</th>
                                         <th>PIC</th>
                                         <th>Arsip Elektronik</th>
+                                        @if (auth()->user()->role == 1)
+                                            <th>File</th>
+                                        @endif
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($letters as $surat)
+                                    @forelse ($letters as $surat)
                                         @php
                                             setlocale(LC_ALL, 'IND');
                                             //set locale for vps
@@ -76,6 +79,16 @@
                                             <td class="text-center">
                                                 {{ $surat->status == 0 ? '' : ($surat->status == 1 ? 'Ada' : 'CANCEL') }}
                                             </td>
+                                            @if (auth()->user()->role == 1)
+                                                <td class="text-center">
+                                                    @if ($surat->file)
+                                                        <a href="{{ asset('storage/docs/' . $surat->file) }}"
+                                                            target="_blank">Lihat</a>
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                            @endif
                                             <td class="text-center">
                                                 @if (auth()->user()->id == $surat->id_user || auth()->user()->role == 1)
                                                     @if ($surat->status == 0)
@@ -88,10 +101,18 @@
                                                         wire:click="deleteSurat({{ $surat->id }})"
                                                         data-toggle="modal"
                                                         data-target="#deleteSuratModal">Hapus</button>
+                                                    @if ($surat->status == 0)
+                                                        <button class="btn btn-sm btn-info"
+                                                            wire:click="sendReminder({{ $surat->id }})">Reminder</button>
+                                                    @endif
                                                 @endif
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="8" class="text-center">Tidak ada data</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                             {{ $letters->links('vendor.pagination.bootstrap-4') }}

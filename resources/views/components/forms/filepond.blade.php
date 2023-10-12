@@ -2,6 +2,8 @@
     const post = FilePond.create($refs.{{ $attributes->get('ref') ?? 'input' }});
     post.setOptions({
         allowMultiple: {{ $attributes->has('multiple') ? 'true' : 'false' }},
+        labelIdle: '{!! $attributes->get('labelIdle') ??
+            'Drag & Drop your files or <span class="filepond--label-action">Browse</span>' !!}',
         server: {
             process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
                 @this.upload('{{ $attributes->whereStartsWith('wire:model')->first() }}', file, load, error, progress)

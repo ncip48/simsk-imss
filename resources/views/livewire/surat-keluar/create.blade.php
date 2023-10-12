@@ -52,7 +52,8 @@
 
                     @if ($isEdit)
                         <x-forms.filepond wire:model="file" allowFileTypeValidation allowFileSizeValidation
-                            maxFileSize="4mb" />
+                            maxFileSize="4mb"
+                            labelIdle="Seret & lepas file disini atau <u><b>klik</b></u> untuk upload" />
                     @endif
                     {{-- <x-forms.filepond wire:model="image" /> --}}
 
