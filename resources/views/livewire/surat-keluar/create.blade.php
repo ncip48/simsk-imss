@@ -18,6 +18,15 @@
                     <input type="hidden" {{ $isView ? 'disabled' : '' }} class="form-control" placeholder="Type"
                         wire:model="type" />
 
+                    <div class="form-group mb-3">
+                        <label for="title">Tanggal <span class="text-danger">*</span></label>
+                        <input type="date" {{ $isView ? 'disabled' : '' }} class="form-control"
+                            placeholder="No Surat" wire:model="created_at" />
+                        @error('created_at')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
                     @if ($isEdit)
                         {{-- Surat No --}}
                         <div class="form-group mb-3">

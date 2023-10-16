@@ -11,6 +11,8 @@ class SuratKeluar extends Model
 
     protected $table = 'letters';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'id',
         'type',
@@ -20,5 +22,6 @@ class SuratKeluar extends Model
         'id_user',
         'file',
         'status',
+        'created_at'
     ];
 }

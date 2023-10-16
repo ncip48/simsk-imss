@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Imports\SuratImport;
 use App\Models\SuratKeluar as ModelsSuratKeluar;
+use Carbon\Carbon;
 use Exception;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -46,6 +47,7 @@ class SuratKeluar extends Component
         'uraian' => 'required',
         'file' => 'nullable|max:2048',
         'fileUpload' => 'nullable|max:2048',
+        'created_at' => 'nullable'
     ];
 
     protected $messages = [
@@ -140,6 +142,8 @@ class SuratKeluar extends Component
         $collection = $collection->map(function ($item) use ($headers) {
             //remove $item[0], $item[7-29]
             $item = array_slice($item, 1, 6);
+            //change 45191.0 with date
+            $item[0] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($item[0])->format('Y-m-d');
             //add type in index 7
             $item[5] = $item[5] == 'Ada' ? 1 : 0;
             $item[6] = 'd1';
@@ -154,6 +158,27 @@ class SuratKeluar extends Component
             'type' => 'info',
             'message' => "Fitur masih dalam tahap pengembangan, see u~"
         ]);
+    }
+
+    public function incrementSubNomor($start)
+    {
+        $end = 'Z';
+
+        //increment sub nomor A-Z
+
+        $sub = $start;
+
+        if ($sub == null) {
+            return 'A';
+        }
+
+        $sub++;
+
+        if ($sub == $end) {
+            $sub = 'A';
+        }
+
+        return $sub;
     }
 
     public function storeSurat()
@@ -183,8 +208,11 @@ class SuratKeluar extends Component
             $count = explode('/', $count)[0] + 1;
         }
 
+        //format count 001, dll until 100
+        $count = str_pad($count, 3, '0', STR_PAD_LEFT);
+
         //get romawi bulan ini
-        $romawi = $this->createRomawi(date('m'));
+        $romawi = $this->createRomawi(date('m', strtotime($this->created_at)));
 
         //get tahun ini
         $year = date('Y');
@@ -193,9 +221,46 @@ class SuratKeluar extends Component
         $type = strtoupper($validatedData['type']);
 
         //append no surat dengan format $count/$romawi/$type/IMSS/$year
-        $validatedData['no_surat'] = $count . '/' . $romawi . '/' . $type . '/IMSS/' . $year;
+
+        //found the SuratKeluar where created_at = $this->created_at
+
+        $check_date = ModelsSuratKeluar::whereDate('created_at', $this->created_at)->count();
+
+        $date_now = Carbon::now()->format('Y-m-d');
+
+        if ($check_date > 0 && $this->created_at != $date_now) {
+            $romawi = $this->createRomawi(date('m', strtotime($this->created_at)));
+            //find latest surat keluar with date $this->created_at then get sub nomor, if not found then return A
+            $latestSurat = ModelsSuratKeluar::whereDate('created_at', $this->created_at)
+                ->orderBy('id', 'desc')
+                ->latest()->first();
+            $sub = $latestSurat->no_surat;
+            //pecah $sub dengan 3 karakter didepan misal 001A maka ambil A
+            $sub = substr($sub, 3, 1);
+
+            if ($sub == '/') {
+                $sub = null;
+            } else {
+                $sub = $sub;
+            }
+            $increment_sub = $this->incrementSubNomor($sub);
+            // dd($increment_sub);
+            $count = $latestSurat->no_surat;
+            $count = explode('/', $count)[0];
+            //get the 3 digit number
+            $count = substr($count, 0, 3);
+            $romawi = $this->createRomawi(date('m', strtotime($this->created_at)));
+            $validatedData['no_surat'] = $count . $increment_sub . '/' . $romawi . '/' . $type . '/IMSS/' . $year;
+        } else {
+            $validatedData['no_surat'] = $count . '/' . $romawi . '/' . $type . '/IMSS/' . $year;
+        }
+
 
         $validatedData['id_user'] = auth()->user()->id;
+
+        $validatedData['file'] = null;
+
+        $validatedData['created_at'] = $this->created_at;
 
         $surat = ModelsSuratKeluar::create($validatedData);
 
