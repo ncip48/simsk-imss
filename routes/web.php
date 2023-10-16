@@ -2,6 +2,7 @@
 
 use App\Livewire\Dashboard;
 use App\Livewire\Login;
+use App\Livewire\SuratKeluar;
 use App\Livewire\User;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/', function () {
+    return redirect()->route('login');
+})->name('index');
 
 Route::get('/login', Login::class)->name('login');
 
@@ -33,7 +38,13 @@ Route::middleware(['auth'])->group(function () {
             return view('user');
         })->name('user');
     });
+    Route::get('generate-surat', function () {
+        return view('generate-surat');
+    })->name('generate-surat');
 
     //LOGOUT
     Route::post('logout', [Login::class, 'logout'])->name('logout');
 });
+
+
+Route::post('test_excel', [SuratKeluar::class, 'importSurat'])->name('test_excel');

@@ -143,6 +143,15 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('generate-surat') }}"
+                                class="nav-link {{ request()->is('generate-surat') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-envelope-open-text"></i>
+                                <p>
+                                    Generate Surat
+                                </p>
+                            </a>
+                        </li>
                         {{-- <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-envelope"></i>
@@ -259,6 +268,8 @@
     <script src="{{ asset('dist/js/pages/dashboard2.js') }}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
 
     @stack('scripts')
 

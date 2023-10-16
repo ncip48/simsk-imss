@@ -2,11 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Imports\SuratImport;
 use App\Models\SuratKeluar as ModelsSuratKeluar;
 use Exception;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SuratKeluar extends Component
 {
@@ -43,6 +45,7 @@ class SuratKeluar extends Component
         'tujuan' => 'required',
         'uraian' => 'required',
         'file' => 'nullable|max:2048',
+        'fileUpload' => 'nullable|max:2048',
     ];
 
     protected $messages = [
@@ -101,7 +104,52 @@ class SuratKeluar extends Component
     public $fileUpload;
     public function importSurat()
     {
-        dd($this->fileUpload);
+        $file = $this->fileUpload;
+
+        $collection = Excel::toCollection(new SuratImport, $file);
+
+        $collection = $collection[0];
+
+        $headers = [
+            'tanggal_surat',
+            'nomor_surat',
+            'tujuan',
+            'uraian',
+            'pic',
+            'arsip_elektronik',
+            'type'
+        ];
+
+        //remove index 0
+        $collection->shift();
+        $collection->shift();
+
+        $collection = $collection->map(function ($item) {
+            $item = $item->toArray();
+            return $item;
+        });
+
+        //looping then remove every index 2 where null
+        foreach ($collection as $key => $value) {
+            if ($value[2] == null) {
+                $collection->forget($key);
+            }
+        }
+
+        //remove index 0, 7-29 in $collections->item
+        $collection = $collection->map(function ($item) use ($headers) {
+            //remove $item[0], $item[7-29]
+            $item = array_slice($item, 1, 6);
+            //add type in index 7
+            $item[5] = $item[5] == 'Ada' ? 1 : 0;
+            $item[6] = 'd1';
+            return $item;
+        });
+
+
+        dd($collection);
+
+
         return $this->dispatch('alert', [
             'type' => 'info',
             'message' => "Fitur masih dalam tahap pengembangan, see u~"

@@ -15,8 +15,6 @@
                 {{-- Form starts --}}
                 <form wire:submit.prevent="importSurat">
 
-
-
                     <x-forms.filepond wire:model="fileUpload" allowFileTypeValidation allowFileSizeValidation
                         maxFileSize="4mb" labelIdle="Seret & lepas file disini atau <u><b>klik</b></u> untuk upload"
                         acceptedFileTypes="['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel']" />
@@ -24,11 +22,7 @@
                     <div class="text-end">
                         <button type="button" wire:click="closeModal" data-dismiss="modal"
                             class="btn btn-secondary">Tutup</button>
-
-                        {{-- If not view then only show the submit button --}}
-                        @if (!$isView)
-                            <button type="submit" class="btn btn-success" wire:loading.attr="disabled">Simpan</button>
-                        @endif
+                        <button type="submit" class="btn btn-success" wire:loading.attr="disabled">Simpan</button>
                     </div>
 
                 </form>
