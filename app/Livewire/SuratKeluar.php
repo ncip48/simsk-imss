@@ -98,6 +98,16 @@ class SuratKeluar extends Component
         return $hasil;
     }
 
+    public $fileUpload;
+    public function importSurat()
+    {
+        dd($this->fileUpload);
+        return $this->dispatch('alert', [
+            'type' => 'info',
+            'message' => "Fitur masih dalam tahap pengembangan, see u~"
+        ]);
+    }
+
     public function storeSurat()
     {
         $validatedData = $this->validate();

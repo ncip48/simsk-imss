@@ -2,6 +2,7 @@
 <div class="content-wrapper">
     @include('livewire.surat-keluar.create')
     @include('livewire.surat-keluar.delete')
+    @include('livewire.surat-keluar.import')
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
@@ -26,19 +27,30 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#suratModal">
-                                Tambah Surat Keluar {{ $tipe }}
-                            </button>
-                            <button type="button" class="btn btn-success" wire:click="changeTipe('d1')">
-                                D1
-                            </button>
-                            <button type="button" class="btn btn-success" wire:click="changeTipe('d2')">
-                                D2
-                            </button>
-                            <button type="button" class="btn btn-success" wire:click="changeTipe('d3')">
-                                D3
-                            </button>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#suratModal">
+                                        Tambah Surat Keluar {{ $tipe }}
+                                    </button>
+                                    <button type="button" class="btn btn-success" wire:click="changeTipe('d1')">
+                                        D1
+                                    </button>
+                                    <button type="button" class="btn btn-success" wire:click="changeTipe('d2')">
+                                        D2
+                                    </button>
+                                    <button type="button" class="btn btn-success" wire:click="changeTipe('d3')">
+                                        D3
+                                    </button>
+                                </div>
+                                {{-- import button with icon  --}}
+                                <div>
+                                    <button data-toggle="modal" data-target="#suratImport" class="btn btn-warning">
+                                        <i class="fas fa-file-import"></i>
+                                        Import
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -74,7 +86,8 @@
                                             <td class="text-center">{{ $surat->no_surat }}</td>
                                             <td>{{ $surat->tujuan }}</td>
                                             <td>{{ $surat->uraian }}</td>
-                                            <td class="text-center">{{ $surat->kode_divisi }} - {{ $surat->nama_user }}
+                                            <td class="text-center">{{ $surat->kode_divisi }} -
+                                                {{ $surat->nama_user }}
                                             </td>
                                             <td class="text-center">
                                                 {{ $surat->status == 0 ? '' : ($surat->status == 1 ? 'Ada' : 'CANCEL') }}
@@ -92,11 +105,10 @@
                                             <td class="text-center">
                                                 @if (auth()->user()->id == $surat->id_user || auth()->user()->role == 1)
                                                     @if ($surat->status == 0)
-                                                        <button type="button"
-                                                            wire:click="editSurat({{ $surat->id }})"
-                                                            class="btn btn-sm btn-warning" data-toggle="modal"
-                                                            data-target="#suratModal">Edit</button>
                                                     @endif
+                                                    <button type="button" wire:click="editSurat({{ $surat->id }})"
+                                                        class="btn btn-sm btn-warning" data-toggle="modal"
+                                                        data-target="#suratModal">Edit</button>
                                                     <button class="btn btn-sm btn-danger"
                                                         wire:click="deleteSurat({{ $surat->id }})"
                                                         data-toggle="modal"
