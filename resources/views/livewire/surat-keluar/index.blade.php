@@ -3,6 +3,7 @@
     @include('livewire.surat-keluar.create')
     @include('livewire.surat-keluar.delete')
     @include('livewire.surat-keluar.import')
+    @include('livewire.surat-keluar.file')
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
@@ -95,8 +96,8 @@
                                             @if (auth()->user()->role == 1)
                                                 <td class="text-center">
                                                     @if ($surat->file)
-                                                        <a href="{{ asset('storage/docs/' . $surat->file) }}"
-                                                            target="_blank">Lihat</a>
+                                                        <a href="#" data-toggle="modal" data-target="#fileModal"
+                                                            wire:click="showFile({{ $surat }})">Lihat</a>
                                                     @else
                                                         -
                                                     @endif

@@ -26,7 +26,7 @@ class SuratKeluar extends Component
             ->leftJoin('users', 'users.id', '=', 'letters.id_user')
             ->leftJoin('departments', 'departments.id_divisi', '=', 'users.id_divisi')
             ->select('letters.*', 'users.name as nama_user', 'users.id as id_user', 'departments.nama as nama_divisi', 'departments.id_divisi', 'departments.kode as kode_divisi')
-            ->orderBy('letters.id', 'asc')
+            ->orderBy('letters.no_surat', 'asc')
             ->paginate(10);
 
         return view('livewire.surat-keluar.index', [
@@ -45,7 +45,7 @@ class SuratKeluar extends Component
         'type' => 'required',
         'tujuan' => 'required',
         'uraian' => 'required',
-        'file' => 'nullable|max:2048',
+        'file' => 'nullable|max:2048|mimes:pdf',
         'fileUpload' => 'nullable|max:2048',
         'created_at' => 'required|date'
     ];
@@ -55,9 +55,10 @@ class SuratKeluar extends Component
         'tujuan.required' => 'Tujuan tidak boleh kosong.',
         'uraian.required' => 'Uraian tidak boleh kosong.',
         'file.max' => 'File maksimal 2MB.',
+        'file.mimes' => 'File harus berupa PDF.',
         'fileUpload.max' => 'File maksimal 2MB.',
         'created_at.required' => 'Tanggal Surat tidak boleh kosong.',
-        'created_at.date' => 'Tanggal Surat harus berupa tanggal.'
+        'created_at.date' => 'Tanggal Surat harus berupa tanggal.',
     ];
 
     public function updated($inputs)
@@ -184,6 +185,49 @@ class SuratKeluar extends Component
         return $sub;
     }
 
+    public function decrementSubNomor($start)
+    {
+        $end = 'Z';
+
+        //increment sub nomor A-Z
+
+        $sub = $start;
+
+        if ($sub == null) {
+            return 'A';
+        }
+
+        $sub--;
+
+        if ($sub == $end) {
+            $sub = 'A';
+        }
+
+        return $sub;
+    }
+
+    function gantiString($string)
+    {
+        // Array berisi urutan string
+        $urutanString = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',  'W', 'X', 'Y', 'Z'];
+
+        // Mencari indeks dari string input
+        $index = array_search($string, $urutanString);
+
+        if ($index !== false) {
+            // Jika bukan string terakhir, kembalikan string berikutnya
+            if ($index < count($urutanString) - 1) {
+                return $urutanString[$index + 1];
+            } else {
+                // Jika string terakhir, kembali ke string pertama
+                return $urutanString[0];
+            }
+        } else {
+            // Jika input tidak valid, kembalikan pesan error atau nilai default
+            return "Input tidak valid";
+        }
+    }
+
     public function storeSurat()
     {
         $validatedData = $this->validate();
@@ -253,8 +297,9 @@ class SuratKeluar extends Component
             $romawi = $this->createRomawi(date('m', strtotime($this->created_at)));
             //find latest surat keluar with date $this->created_at then get sub nomor, if not found then return A
             $latestSurat = ModelsSuratKeluar::whereDate('created_at', $this->created_at)
-                ->orderBy('id', 'desc')
+                ->orderBy('no_surat', 'desc')
                 ->latest()->first();
+
             $sub = $latestSurat->no_surat;
             //pecah $sub dengan 3 karakter didepan misal 001A maka ambil A
             $sub = substr($sub, 3, 1);
@@ -264,8 +309,7 @@ class SuratKeluar extends Component
             } else {
                 $sub = $sub;
             }
-            $increment_sub = $this->incrementSubNomor($sub);
-            // dd($increment_sub);
+            $increment_sub = $this->gantiString($sub);
             $count = $latestSurat->no_surat;
             $count = explode('/', $count)[0];
             //get the 3 digit number
@@ -300,6 +344,13 @@ class SuratKeluar extends Component
         $this->resetInputs();
 
         $this->dispatch('close-modal');
+    }
+
+    public $fileShow;
+
+    public function showFile(ModelsSuratKeluar $suratKeluar)
+    {
+        $this->fileShow = asset('storage/docs/' . $suratKeluar->file);
     }
 
     private function resetInputs()
@@ -342,7 +393,7 @@ class SuratKeluar extends Component
             $this->tujuan = $suratKeluar->tujuan;
             $this->uraian = $suratKeluar->uraian;
             $this->id_user = $suratKeluar->id_user;
-            $this->created_at = $suratKeluar->created_at;
+            $this->created_at = date('Y-m-d', strtotime($suratKeluar->created_at));
             $this->status = $suratKeluar->status;
             $this->isEdit = true;
         } else {
