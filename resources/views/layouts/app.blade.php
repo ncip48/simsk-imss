@@ -143,7 +143,7 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('generate-surat') }}"
                                 class="nav-link {{ request()->is('generate-surat') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-envelope-open-text"></i>
@@ -151,7 +151,7 @@
                                     Generate Surat
                                 </p>
                             </a>
-                        </li>
+                        </li> --}}
                         {{-- <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-envelope"></i>
