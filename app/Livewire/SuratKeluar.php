@@ -47,7 +47,7 @@ class SuratKeluar extends Component
         'uraian' => 'required',
         'file' => 'nullable|max:2048',
         'fileUpload' => 'nullable|max:2048',
-        'created_at' => 'nullable'
+        'created_at' => 'required|date'
     ];
 
     protected $messages = [
@@ -55,6 +55,9 @@ class SuratKeluar extends Component
         'tujuan.required' => 'Tujuan tidak boleh kosong.',
         'uraian.required' => 'Uraian tidak boleh kosong.',
         'file.max' => 'File maksimal 2MB.',
+        'fileUpload.max' => 'File maksimal 2MB.',
+        'created_at.required' => 'Tanggal Surat tidak boleh kosong.',
+        'created_at.date' => 'Tanggal Surat harus berupa tanggal.'
     ];
 
     public function updated($inputs)
@@ -186,7 +189,9 @@ class SuratKeluar extends Component
         $validatedData = $this->validate();
 
         //find latest surat keluar, if type 0 then return
-        $latestSurat = ModelsSuratKeluar::where('type', $this->type)->latest()->first();
+        $latestSurat = ModelsSuratKeluar::where('type', $this->type)->where('status', '0')
+            ->orderBy('id', 'desc')->latest()->first();
+
         if ($latestSurat) {
             if ($latestSurat->status == 0) {
                 $this->dispatch('alert', [
@@ -229,6 +234,22 @@ class SuratKeluar extends Component
         $date_now = Carbon::now()->format('Y-m-d');
 
         if ($check_date > 0 && $this->created_at != $date_now) {
+
+            //check by date and type
+            $count_check = ModelsSuratKeluar::whereDate('created_at', $this->created_at)
+                ->where('type', $this->type)
+                ->latest()->first();
+
+            if ($count_check) {
+                if ($count_check->status == 0) {
+                    $this->dispatch('alert', [
+                        'type' => 'error',
+                        'message' => "Surat sebelumnya belum diupload! Mohon hubungi PIC sebelumnya."
+                    ]);
+                    return;
+                }
+            }
+
             $romawi = $this->createRomawi(date('m', strtotime($this->created_at)));
             //find latest surat keluar with date $this->created_at then get sub nomor, if not found then return A
             $latestSurat = ModelsSuratKeluar::whereDate('created_at', $this->created_at)
