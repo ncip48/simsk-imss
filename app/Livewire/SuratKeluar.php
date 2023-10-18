@@ -510,12 +510,27 @@ class SuratKeluar extends Component
 
     private function sendApiWA($to, $message)
     {
-        //call api to https://wa.srv1.wapanels.com/send-message?api_key=zyy2XFL04fOnHVf1kfpBWffsm5ZLT8&sender=6287843584104&number=6289602014737&message=Halo *KONTOL*
-        $url = 'https://wa.srv1.wapanels.com/send-message?api_key=zyy2XFL04fOnHVf1kfpBWffsm5ZLT8&sender=6287843584104&number=' . $to . '&message=' . $message;
-        $client = new Client();
-        $request = new Request('POST', $url);
-        $res = $client->sendAsync($request)->wait();
-        return $res->getBody();
+        try {
+            //code...
+            //call api to https://wa.srv1.wapanels.com/send-message?api_key=zyy2XFL04fOnHVf1kfpBWffsm5ZLT8&sender=6287843584104&number=6289602014737&message=Halo *KONTOL*
+            $url = 'https://wa.srv1.wapanels.com/send-message?api_key=zyy2XFL04fOnHVf1kfpBWffsm5ZLT8&sender=6287843584104&number=' . $to . '&message=' . $message;
+            $client = new Client();
+            $request = new Request('POST', $url);
+            $res = $client->sendAsync($request)->wait();
+            $res = $res->getBody();
+            //convert to json
+            $res = json_decode($res);
+            return [
+                'success' => true,
+                'message' => $res->message
+            ];
+        } catch (\Throwable $th) {
+            //throw $th;
+            return [
+                'success' => false,
+                'message' => $th->getMessage()
+            ];
+        }
     }
 
     private function changeFormatNumberPhone($phone)
@@ -526,7 +541,6 @@ class SuratKeluar extends Component
         return $phone;
     }
 
-    public $loadingReminder = false;
     public function sendReminder(ModelsSuratKeluar $suratKeluar)
     {
         $id_surat = $suratKeluar->id_user;
@@ -540,6 +554,14 @@ class SuratKeluar extends Component
         $message = 'Halo *' . $user->name . '*, Surat dengan nomor *' . $suratKeluar->no_surat . '* belum diupload. Mohon untuk segera diupload. Terima kasih.';
 
         $send = $this->sendApiWA($to, $message);
+
+        if (!$send['success']) {
+            $this->dispatch('alert', [
+                'type' => 'error',
+                'message' => "Reminder gagal dikirim!"
+            ]);
+            return;
+        }
 
         return $this->dispatch('alert', [
             'type' => 'success',
