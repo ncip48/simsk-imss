@@ -208,6 +208,8 @@ class SuratKeluar extends Component
 
     function gantiString($string)
     {
+
+        if (!$string) return 'A';
         // Array berisi urutan string
         $urutanString = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',  'W', 'X', 'Y', 'Z'];
 
