@@ -114,11 +114,11 @@
                                                         wire:click="deleteSurat({{ $surat->id }})"
                                                         data-toggle="modal"
                                                         data-target="#deleteSuratModal">Hapus</button>
-                                                    @if ($surat->status == 0)
-                                                        <button class="btn btn-sm btn-info"
-                                                            wire:click="sendReminder({{ $surat->id }})"
-                                                            wire:loading.attr="disabled">Reminder</button>
-                                                    @endif
+                                                @endif
+                                                @if ($surat->status == 0)
+                                                    <button class="btn btn-sm btn-info"
+                                                        wire:click="sendReminder({{ $surat->id }})"
+                                                        wire:loading.attr="disabled">Reminder</button>
                                                 @endif
                                             </td>
                                         </tr>
