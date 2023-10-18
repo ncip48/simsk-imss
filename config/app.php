@@ -56,8 +56,6 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-    
-    'url' => 'https://surat.herly.tech',
 
     'asset_url' => env('ASSET_URL'),
 
