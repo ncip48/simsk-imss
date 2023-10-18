@@ -4,8 +4,11 @@ namespace App\Livewire;
 
 use App\Imports\SuratImport;
 use App\Models\SuratKeluar as ModelsSuratKeluar;
+use App\Models\User;
 use Carbon\Carbon;
 use Exception;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -505,8 +508,39 @@ class SuratKeluar extends Component
         $this->resetInputs();
     }
 
+    private function sendApiWA($to, $message)
+    {
+        //call api to https://wa.srv1.wapanels.com/send-message?api_key=zyy2XFL04fOnHVf1kfpBWffsm5ZLT8&sender=6287843584104&number=6289602014737&message=Halo *KONTOL*
+        $url = 'https://wa.srv1.wapanels.com/send-message?api_key=zyy2XFL04fOnHVf1kfpBWffsm5ZLT8&sender=6287843584104&number=' . $to . '&message=' . $message;
+        $client = new Client();
+        $request = new Request('POST', $url);
+        $res = $client->sendAsync($request)->wait();
+        return $res->getBody();
+    }
+
+    private function changeFormatNumberPhone($phone)
+    {
+        //create function to change 081359xxxx to 6281xxxx
+        $phone = substr($phone, 1);
+        $phone = '62' . $phone;
+        return $phone;
+    }
+
+    public $loadingReminder = false;
     public function sendReminder(ModelsSuratKeluar $suratKeluar)
     {
+        $id_surat = $suratKeluar->id_user;
+
+        $user = User::find($id_surat);
+
+        $to = $user->no_hp;
+
+        $to = $this->changeFormatNumberPhone($to);
+
+        $message = 'Halo *' . $user->name . '*, Surat dengan nomor *' . $suratKeluar->no_surat . '* belum diupload. Mohon untuk segera diupload. Terima kasih.';
+
+        $send = $this->sendApiWA($to, $message);
+
         return $this->dispatch('alert', [
             'type' => 'success',
             'message' => "Reminder berhasil dikirim!"

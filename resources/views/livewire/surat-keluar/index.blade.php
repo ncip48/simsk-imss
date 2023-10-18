@@ -116,7 +116,8 @@
                                                         data-target="#deleteSuratModal">Hapus</button>
                                                     @if ($surat->status == 0)
                                                         <button class="btn btn-sm btn-info"
-                                                            wire:click="sendReminder({{ $surat->id }})">Reminder</button>
+                                                            wire:click="sendReminder({{ $surat->id }})"
+                                                            wire:loading.attr="disabled">Reminder</button>
                                                     @endif
                                                 @endif
                                             </td>
@@ -128,7 +129,8 @@
                                     @endforelse
                                 </tbody>
                             </table>
-                            {{ $letters->links('vendor.pagination.bootstrap-4') }}
+                            {{ $letters->links('vendor.pagination.bootstrap-4', ['elements' => $letters]) }}
+
                         </div>
                         <!-- /.card-body -->
                     </div>
