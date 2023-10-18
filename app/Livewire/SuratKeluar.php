@@ -230,6 +230,92 @@ class SuratKeluar extends Component
         }
     }
 
+    public function generateNomorSurat($type, $tanggal)
+    {
+        //get count surat
+        $count = ModelsSuratKeluar::where('type', $type)->orderBy('no_surat', 'desc');
+
+        if ($count->count() == 0) {
+            $count = 1;
+        } else {
+            //ambil no_surat lalu explode / index 0
+            $count = $count->latest()->first()->no_surat;
+            $count = explode('/', $count)[0] + 1;
+        }
+
+        // dd($count);
+
+
+        //format count 001, dll until 100
+        $count = str_pad($count, 3, '0', STR_PAD_LEFT);
+
+        //get romawi bulan ini
+        $romawi = $this->createRomawi(date('m', strtotime($tanggal)));
+
+        //get tahun ini
+        $year = date('Y');
+
+        //uppercase type
+        $type = strtoupper($type);
+
+        //append no surat dengan format $count/$romawi/$type/IMSS/$year
+
+        //found the SuratKeluar where created_at = $this->created_at
+
+        $check_date = ModelsSuratKeluar::whereDate('created_at', $tanggal)->count();
+
+        $date_now = Carbon::now()->format('Y-m-d');
+
+        if ($check_date > 0 && $tanggal != $date_now) {
+
+            //check by date and type
+            $count_check = ModelsSuratKeluar::whereDate('created_at', $tanggal)
+                ->where('type', $this->type)
+                ->latest()->first();
+
+            if ($count_check) {
+                if ($count_check->status == 0) {
+                    $this->dispatch('alert', [
+                        'type' => 'error',
+                        'message' => "Surat sebelumnya belum diupload! Mohon hubungi PIC sebelumnya."
+                    ]);
+                    return;
+                }
+            }
+
+            $romawi = $this->createRomawi(date('m', strtotime($tanggal)));
+            //find latest surat keluar with date $tanggal then get sub nomor, if not found then return A
+            $latestSurat = ModelsSuratKeluar::whereDate('created_at', $tanggal)
+                ->orderBy('no_surat', 'desc')
+                ->latest()->first();
+
+            $sub = $latestSurat->no_surat;
+            //pecah $sub dengan 3 karakter didepan misal 001A maka ambil A
+            $sub = substr($sub, 3, 1);
+
+            if ($sub == '/') {
+                $sub = null;
+            } else {
+                $sub = $sub;
+            }
+            $increment_sub = $this->gantiString($sub);
+            $count = $latestSurat->no_surat;
+            $count = explode('/', $count)[0];
+            //get the 3 digit number
+            $count = substr($count, 0, 3);
+            $romawi = $this->createRomawi(date('m', strtotime($tanggal)));
+            return $count . $increment_sub . '/' . $romawi . '/' . $type . '/IMSS/' . $year;
+        } else {
+            return $count . '/' . $romawi . '/' . $type . '/IMSS/' . $year;
+        }
+    }
+
+    public function changeNomorSurat()
+    {
+        $no_surat = $this->generateNomorSurat($this->type, $this->created_at);
+        dd($no_surat);
+    }
+
     public function storeSurat()
     {
         $validatedData = $this->validate();
@@ -248,80 +334,8 @@ class SuratKeluar extends Component
             }
         }
 
-        //get count surat
-        $count = ModelsSuratKeluar::where('type', $validatedData['type']);
 
-        if ($count->count() == 0) {
-            $count = 1;
-        } else {
-            //ambil no_surat lalu explode / index 0
-            $count = $count->latest()->first()->no_surat;
-            $count = explode('/', $count)[0] + 1;
-        }
-
-        //format count 001, dll until 100
-        $count = str_pad($count, 3, '0', STR_PAD_LEFT);
-
-        //get romawi bulan ini
-        $romawi = $this->createRomawi(date('m', strtotime($this->created_at)));
-
-        //get tahun ini
-        $year = date('Y');
-
-        //uppercase type
-        $type = strtoupper($validatedData['type']);
-
-        //append no surat dengan format $count/$romawi/$type/IMSS/$year
-
-        //found the SuratKeluar where created_at = $this->created_at
-
-        $check_date = ModelsSuratKeluar::whereDate('created_at', $this->created_at)->count();
-
-        $date_now = Carbon::now()->format('Y-m-d');
-
-        if ($check_date > 0 && $this->created_at != $date_now) {
-
-            //check by date and type
-            $count_check = ModelsSuratKeluar::whereDate('created_at', $this->created_at)
-                ->where('type', $this->type)
-                ->latest()->first();
-
-            if ($count_check) {
-                if ($count_check->status == 0) {
-                    $this->dispatch('alert', [
-                        'type' => 'error',
-                        'message' => "Surat sebelumnya belum diupload! Mohon hubungi PIC sebelumnya."
-                    ]);
-                    return;
-                }
-            }
-
-            $romawi = $this->createRomawi(date('m', strtotime($this->created_at)));
-            //find latest surat keluar with date $this->created_at then get sub nomor, if not found then return A
-            $latestSurat = ModelsSuratKeluar::whereDate('created_at', $this->created_at)
-                ->orderBy('no_surat', 'desc')
-                ->latest()->first();
-
-            $sub = $latestSurat->no_surat;
-            //pecah $sub dengan 3 karakter didepan misal 001A maka ambil A
-            $sub = substr($sub, 3, 1);
-
-            if ($sub == '/') {
-                $sub = null;
-            } else {
-                $sub = $sub;
-            }
-            $increment_sub = $this->gantiString($sub);
-            $count = $latestSurat->no_surat;
-            $count = explode('/', $count)[0];
-            //get the 3 digit number
-            $count = substr($count, 0, 3);
-            $romawi = $this->createRomawi(date('m', strtotime($this->created_at)));
-            $validatedData['no_surat'] = $count . $increment_sub . '/' . $romawi . '/' . $type . '/IMSS/' . $year;
-        } else {
-            $validatedData['no_surat'] = $count . '/' . $romawi . '/' . $type . '/IMSS/' . $year;
-        }
-
+        $validatedData['no_surat'] = $this->generateNomorSurat($this->type, $this->created_at);
 
         $validatedData['id_user'] = auth()->user()->id;
 

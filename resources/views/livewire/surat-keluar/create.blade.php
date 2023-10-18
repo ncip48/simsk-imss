@@ -21,7 +21,7 @@
                     <div class="form-group mb-3">
                         <label for="title">Tanggal <span class="text-danger">*</span></label>
                         <input type="date" {{ $isView ? 'disabled' : '' }} class="form-control"
-                            placeholder="No Surat" wire:model="created_at" />
+                            placeholder="No Surat" wire:model="created_at" wire:change="changeNomorSurat" />
                         @error('created_at')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
