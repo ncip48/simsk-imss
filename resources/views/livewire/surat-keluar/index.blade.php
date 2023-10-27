@@ -87,7 +87,7 @@
                                             <td class="text-center">{{ $surat->no_surat }}</td>
                                             <td>{{ $surat->tujuan }}</td>
                                             <td>{{ $surat->uraian }}</td>
-                                            <td class="text-center">{{ $surat->kode_divisi }} -
+                                            <td class="text-center">{{ $surat->nama_divisi }} -
                                                 {{ $surat->nama_user }}
                                             </td>
                                             <td class="text-center">
