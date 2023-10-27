@@ -73,7 +73,7 @@
 
                     {{-- User No HP --}}
                     <div class="form-group mb-3">
-                        <label for="title">No HP <span class="text-danger">*</span></label>
+                        <label for="title">Nomor Whatsapp<span class="text-danger">*</span></label>
                         <input type="text" {{ $isView ? 'disabled' : '' }} class="form-control" placeholder="No HP"
                             wire:model="no_hp" />
                         @error('no_hp')
