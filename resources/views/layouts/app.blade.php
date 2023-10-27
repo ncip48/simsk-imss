@@ -204,6 +204,15 @@
                                 </a>
                             </li>
                         @endif
+                        <li class="nav-item">
+                            <a href="{{ route('edit-profile') }}"
+                                class="nav-link {{ request()->is('edit-profile') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-user-cog"></i>
+                                <p>
+                                    Edit Profile
+                                </p>
+                            </a>
+                        </li>
                         <form action="{{ route('logout') }}" id="logout" method="POST">
                             @csrf
                         </form>

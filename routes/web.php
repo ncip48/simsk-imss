@@ -42,6 +42,10 @@ Route::middleware(['auth'])->group(function () {
         return view('generate-surat');
     })->name('generate-surat');
 
+    Route::get('edit-profile', function () {
+        return view('edit-profile');
+    })->name('edit-profile');
+
     //LOGOUT
     Route::post('logout', [Login::class, 'logout'])->name('logout');
 });
