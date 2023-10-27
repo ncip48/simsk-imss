@@ -88,7 +88,7 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="{{ route('dashboard') }}" class="brand-link">
+            <a href="{{ route('dashboard') }}" class="brand-link d-flex">
                 <img src="https://imsservice.co.id/assets/inka-border.png" alt="AdminLTE Logo"
                     class="brand-image mx-auto d-block" style="opacity: .8">
             </a>
