@@ -158,7 +158,7 @@ class SuratKeluar extends Component
         });
 
 
-        dd($collection);
+        // dd($collection);
 
 
         return $this->dispatch('alert', [
@@ -316,7 +316,7 @@ class SuratKeluar extends Component
     public function changeNomorSurat()
     {
         $no_surat = $this->generateNomorSurat($this->type, $this->created_at);
-        dd($no_surat);
+        // dd($no_surat);
     }
 
     public function storeSurat()
@@ -425,7 +425,7 @@ class SuratKeluar extends Component
 
     public function testUpload()
     {
-        dd($this->file);
+        // dd($this->file);
     }
 
     public function updateSurat()
