@@ -94,7 +94,7 @@ class Document extends Component
             'signature_id' => $this->signature_id,
             'title' => $this->title,
             'file' => $random_name . '.' . $files->getClientOriginalExtension(),
-            'file_signed' => $certificate->signature . '_sign.pdf',
+            'file_signed' => $random_name . '_sign.pdf',
         ]);
 
         $this->dispatch('alert', [
