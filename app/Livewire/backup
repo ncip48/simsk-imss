@@ -1,0 +1,97 @@
+<?php
+
+namespace App\Livewire;
+
+use App\Models\Signature as ModelsSignature;
+use Livewire\Component;
+use setasign\Fpdi\Tcpdf\Fpdi;
+use TCPDF;
+
+class Signature extends Component
+{
+    public function render()
+    {
+        return view('livewire.signature');
+    }
+
+    public function generateCertificate()
+    {
+        $config = array(
+            "digest_alg" => "sha256",
+            "private_key_bits" => 2048,
+            "private_key_type" => OPENSSL_KEYTYPE_RSA,
+        );
+
+        $privateKey = openssl_pkey_new($config);
+        openssl_pkey_export($privateKey, $privateKeyPEM);
+
+        // Generate a new certificate signing request (CSR)
+        $csr = openssl_csr_new(array(), $privateKey, $config);
+        openssl_csr_export($csr, $csrPEM);
+
+        // Generate a self-signed certificate
+        $certificate = openssl_csr_sign($csr, null, $privateKey, 365, $config);
+        openssl_x509_export($certificate, $certificatePEM);
+
+        //save to storage/app/public/certificate and storage/app/public/private_key
+
+        $random_key = rand(1, 100000);
+        $random_cert = rand(1, 100000);
+
+        $privateKeyPath = storage_path('app/public/' . $random_key . '.pem');
+        $certificatePath = storage_path('app/public/' . $random_cert . '.crt');
+
+        // Save private key
+        file_put_contents($privateKeyPath, $privateKeyPEM);
+
+        // Save certificate
+        file_put_contents($certificatePath, $certificatePEM);
+
+        ModelsSignature::create([
+            'user_id' => 9,
+            'private_key' => $random_key . '.pem',
+            'certificate' => $random_cert . '.crt',
+            'issuer' => 'Herly Chahya',
+        ]);
+
+        dd($certificatePEM, $privateKeyPEM);
+    }
+
+    public function generateSignature()
+    {
+        $files = storage_path('app/public/docs/17421.pdf');
+
+        $certificate = ModelsSignature::all();
+
+        $privateKey = openssl_pkey_get_private(
+            'file://' . storage_path('app/public/private_key.pem'),
+            'kocak123'
+        );
+
+        $signatures = array(
+            array(
+                'certificate' => storage_path('app/public/' . $certificate[1]->certificate),
+                'private_key' => 'file://' . storage_path('app/public/private_key.pem'),
+                'password' => 'kocak123',
+                'name' => $certificate[1]->issuer,
+            ),
+        );
+
+        // dd($signatures);
+
+        $pdf = new Fpdi();
+        $pdf->AddPage();
+        $pdf->Cell(40, 10, 'Hello World!');
+
+        $pdf->setSignature($signatures[0]['private_key'], $signatures[0]['certificate'], '', '', 2, array('Name' => 'Your Name', 'Location' => 'Your Location'));
+
+        // Loop through each signature and apply it
+        // foreach ($signatures as $signature) {
+        //     $pdf->setSignature($signature['private_key'], $signature['certificate'], '', '', 2, array('Name' => 'Your Name', 'Location' => 'Your Location'));
+        //     $pdf->AddPage();
+        // }
+
+        // Save the signed PDF
+        $pdf->Output('multi_signed_file.pdf', 'I');
+    }
+}

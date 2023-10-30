@@ -2,6 +2,7 @@
 
 use App\Livewire\Dashboard;
 use App\Livewire\Login;
+use App\Livewire\Signature;
 use App\Livewire\SuratKeluar;
 use App\Livewire\User;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('surat-keluar', function () {
         return view('surat-keluar');
     })->name('surat-keluar');
+    Route::get('tanda-tangan', function () {
+        return view('tanda-tangan');
+    })->name('tanda-tangan');
     Route::middleware(['isAdmin'])->group(function () {
         Route::get('divisi', function () {
             return view('divisi');
@@ -50,5 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('logout', [Login::class, 'logout'])->name('logout');
 });
 
-
 Route::post('test_excel', [SuratKeluar::class, 'importSurat'])->name('test_excel');
+Route::get('test_certificate', [Signature::class, 'generateCertificate'])->name('test_certificate');
+Route::get('test_signature', [Signature::class, 'generateSignature'])->name('test_signature');
+Route::get('test_check', [Signature::class, 'checkSignature'])->name('test_check');
