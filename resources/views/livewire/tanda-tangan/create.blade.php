@@ -1,11 +1,11 @@
-{{-- User Modal --}}
+{{-- TTD Modal --}}
 <div wire:ignore.self class="modal fade" id="signatureModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
     aria-labelledby="signatureModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fw-bold" id="userModalLabel">
-                    {{ $isView ? 'Lihat' : ($isEdit ? 'Edit' : 'Tambah') }} User</h5>
+                <h5 class="modal-title fw-bold" id="signatureModalLabel">
+                    {{ $isView ? 'Lihat' : ($isEdit ? 'Edit' : 'Tambah') }} Tanda Tangan</h5>
                 <button type="button" wire:click="closeModal" class="close" data-dismiss="modal"
                     aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
@@ -14,7 +14,7 @@
                 {{-- Form starts --}}
                 <form wire:submit.prevent="saveSignature">
 
-                    {{-- User Name --}}
+                    {{-- TTD Name --}}
                     <div class="form-group mb-3">
                         <label for="title">Issuer (Nama TTD) <span class="text-danger">*</span></label>
                         <input type="text" {{ $isView ? 'disabled' : '' }} class="form-control" placeholder="Issuer"

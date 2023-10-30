@@ -1,11 +1,11 @@
-{{-- User Modal --}}
+{{-- Doc Modal --}}
 <div wire:ignore.self class="modal fade" id="documentModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
     aria-labelledby="documentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fw-bold" id="userModalLabel">
-                    {{ $isView ? 'Lihat' : ($isEdit ? 'Edit' : 'Tambah') }} User</h5>
+                <h5 class="modal-title fw-bold" id="documentModalLabel">
+                    {{ $isView ? 'Lihat' : ($isEdit ? 'Edit' : 'Tambah') }} Dokumen</h5>
                 <button type="button" wire:click="closeModal" class="close" data-dismiss="modal"
                     aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
@@ -14,7 +14,7 @@
                 {{-- Form starts --}}
                 <form wire:submit.prevent="saveDocument">
 
-                    {{-- User Name --}}
+                    {{-- Doc Name --}}
                     <div class="form-group mb-3">
                         <label for="title">Judul<span class="text-danger">*</span></label>
                         <input type="text" {{ $isView ? 'disabled' : '' }} class="form-control" placeholder="Judul"
@@ -27,7 +27,7 @@
                     <x-forms.filepond wire:model="file" allowFileTypeValidation allowFileSizeValidation
                         maxFileSize="4mb" labelIdle="Seret & lepas file disini atau <u><b>klik</b></u> untuk upload" />
 
-                    {{-- User Divisi --}}
+                    {{-- Doc Sign --}}
                     <div class="form-group mb-3">
                         <label for="title">Signature <span class="text-danger">*</span></label>
                         <select class="form-control" {{ $isView ? 'disabled' : '' }} wire:model="signature_id">
