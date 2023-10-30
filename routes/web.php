@@ -34,6 +34,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('tanda-tangan', function () {
         return view('tanda-tangan');
     })->name('tanda-tangan');
+    Route::get('dokumen', function () {
+        return view('dokumen');
+    })->name('dokumen');
     Route::middleware(['isAdmin'])->group(function () {
         Route::get('divisi', function () {
             return view('divisi');

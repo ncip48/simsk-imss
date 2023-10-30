@@ -145,7 +145,8 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item {{ request()->is('tanda-tangan') ? 'menu-open' : '' }}">
+                        <li
+                            class="nav-item {{ request()->is('tanda-tangan') || request()->is('dokumen') ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ request()->is('tanda-tangan') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-signature"></i>
                                 <p>
@@ -162,7 +163,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('surat-keluar', ['type' => 'd2']) }}" class="nav-link">
+                                    <a href="{{ route('dokumen') }}"
+                                        class="nav-link {{ request()->is('dokumen') ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Dokumen</p>
                                     </a>

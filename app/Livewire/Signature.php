@@ -5,12 +5,13 @@ namespace App\Livewire;
 use App\Models\Signature as ModelsSignature;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use PDO;
 use setasign\Fpdi\Tcpdf\Fpdi;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Signature extends Component
 {
-    public $user_id, $sign, $private_key, $certificate, $issuer, $signature = null, $isView = false, $isEdit = false;
+    public $user_id, $sign, $file, $private_key, $certificate, $issuer, $signature = null, $isView = false, $isEdit = false;
 
     public function render()
     {
@@ -81,7 +82,7 @@ class Signature extends Component
         $this->sign = $randomString;
     }
 
-    public function generateQR($string)
+    public static function generateQR($string)
     {
         $qr =  QrCode::format('png')
             ->size('512')
@@ -94,11 +95,18 @@ class Signature extends Component
         return Storage::put('public/qr/' . $string . '.png', $qr);
     }
 
+    public function signDocument()
+    {
+        $file = $this->file;
+
+        dd($file);
+    }
+
     public function generateSignature()
     {
-        $files = storage_path('app/public/docs/39702.pdf');
+        $files = storage_path('app/public/docs/signed.pdf');
 
-        $certificate = ModelsSignature::first();
+        $certificate = ModelsSignature::first()->latest()->first();
 
         // Load your private keys and certificates for each signer
         $signer1PrivateKey = $certificate->private_key;
@@ -106,22 +114,32 @@ class Signature extends Component
 
         $pdf = new Fpdi();
         $pdf->AddPage();
-        $pdf->Cell(40, 10, 'Hello World!');
+
+        //import from $files
+        $pageCount = $pdf->setSourceFile($files);
+
+        //iterate through all pages
+        for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+            $tplIdx = $pdf->importPage($pageNo);
+            $pdf->useTemplate($tplIdx);
+            if ($pageNo < $pageCount) {
+                $pdf->AddPage();
+            }
+        }
 
         $info = array(
             'Name' => 'Herly Chahya Putra',
-            'Location' => 'Madiun',
         );
 
-        $pdf->setSignature($signer1Certificate, $signer1PrivateKey, 'kocak123', '', 2, $info);
+        $pdf->setSignature($signer1Certificate, $signer1PrivateKey, 'kocak123', '', 2, $info, 'A');
 
         //read signature from signature tables
-        $signature = ModelsSignature::first();
+        $signature = ModelsSignature::first()->latest()->first();
 
         $qr = storage_path('app/public/qr/' . $signature->signature . '.png');
 
-        $pdf->Image($qr, 50, 50, 30, 30, 'PNG');
-        $pdf->setSignatureAppearance(50, 50, 30, 30);
+        $pdf->Image($qr, 150, 50, 30, 30, 'PNG');
+        $pdf->setSignatureAppearance(150, 50, 30, 30);
 
         $pdf->Output('multi_signed_file.pdf', 'I');
     }
