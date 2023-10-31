@@ -86,7 +86,7 @@ class Document extends Component
         // $pdf->Output('multi_signed_file.pdf', 'I');
 
         //save the pdf to storage/app/public/signed
-        $pdf->Output(storage_path('app/public/signed') . '/' . $certificate->signature . '_sign.pdf', 'F');
+        $pdf->Output(storage_path('app/public/signed') . '/' . $random_name . '_sign.pdf', 'F');
 
         //save to database
         ModelsDocument::create([
