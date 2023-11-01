@@ -147,7 +147,8 @@
                         </li>
                         <li
                             class="nav-item {{ request()->is('tanda-tangan') || request()->is('dokumen') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ request()->is('tanda-tangan') ? 'active' : '' }}">
+                            <a href="#"
+                                class="nav-link {{ request()->is('tanda-tangan') || request()->is('dokumen') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-signature"></i>
                                 <p>
                                     TTD Digital [Beta]
