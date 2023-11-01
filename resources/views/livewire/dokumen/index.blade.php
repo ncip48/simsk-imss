@@ -62,6 +62,9 @@
                                             <td>
                                                 <button class="btn btn-sm btn-success"
                                                     wire:click="verifyDocument({{ $document->id }})">Verifikasi</button>
+                                                <button class="btn btn-sm btn-success"
+                                                    wire:click="signDocument({{ $document->id }})">Sign
+                                                    Document</button>
                                                 <button class="btn btn-sm btn-danger"
                                                     wire:click="deleteDocument({{ $document->id }})" data-toggle="modal"
                                                     data-target="#deleteDocumentModal">Hapus</button>

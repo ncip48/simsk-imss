@@ -8,6 +8,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use setasign\Fpdi\Tcpdf\Fpdi;
+use Imagick;
 
 class Document extends Component
 {
@@ -107,8 +108,28 @@ class Document extends Component
         $this->dispatch('close-modal');
     }
 
+    public function signDocument()
+    {
+        $path = storage_path('app/public/temp_img/39702/');
+        $files = scandir($path);
+        //remove the . and .. from the array
+        unset($files[0], $files[1]);
+
+        dd($files);
+    }
+
     public function verifyDocument()
     {
+        $imgExt = new Imagick();
+        $imgExt->readImage(storage_path('app/public/docs/39702.pdf'));
+        //if folder not exist create folder
+        if (!file_exists(storage_path('app/public/temp_img/39702'))) {
+            mkdir(storage_path('app/public/temp_img/39702'), 0777, true);
+        }
+        //save with jpg format with format name {page}.jpg
+        $imgExt->writeImages(storage_path('app/public/temp_img/39702') . '/%d.jpg', true);
+        dd("Document has been converted");
+
         return $this->dispatch('alert', [
             'type' => 'info',
             'message' => "Fitur masih dalam tahap pengembangan, see u~"

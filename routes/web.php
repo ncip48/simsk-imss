@@ -61,3 +61,6 @@ Route::post('test_excel', [SuratKeluar::class, 'importSurat'])->name('test_excel
 Route::get('test_certificate', [Signature::class, 'generateCertificate'])->name('test_certificate');
 Route::get('test_signature', [Signature::class, 'generateSignature'])->name('test_signature');
 Route::get('test_check', [Signature::class, 'checkSignature'])->name('test_check');
+Route::get('drag', function () {
+    return view('test');
+});

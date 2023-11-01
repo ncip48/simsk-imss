@@ -522,7 +522,7 @@ class SuratKeluar extends Component
             $res = json_decode($res);
             return [
                 'success' => true,
-                'message' => $res->message
+                'message' => $res->msg
             ];
         } catch (\Throwable $th) {
             //throw $th;
