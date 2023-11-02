@@ -236,7 +236,7 @@ class SuratKeluar extends Component
     public function generateNomorSurat($type, $tanggal)
     {
         //get count surat
-        $count = ModelsSuratKeluar::where('type', $type)->orderBy('no_surat', 'desc');
+        $count = ModelsSuratKeluar::where('type', $type)->whereDate('created_at', $tanggal)->orderBy('no_surat', 'desc');
 
         if ($count->count() == 0) {
             $count = 1;
