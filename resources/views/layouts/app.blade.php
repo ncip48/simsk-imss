@@ -145,12 +145,14 @@
                                 </p>
                             </a>
                         </li>
+
+                        {{-- Aset Inventaris --}}
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-archive"></i>
                                 <p>
                                     Aset Inventaris
-                                    <i class="right fas fa-angle-left"></i>
+                                    <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
@@ -196,6 +198,36 @@
                                 </li>
                             </ul>
                         </li>
+
+                        {{-- TTD Surat --}}
+                        <li class="nav-item {{ request()->is('tanda-tangan') || request()->is('dokumen') ? 'menu-open' : '' }}">
+                            <a href="#"
+                                class="nav-link {{ request()->is('tanda-tangan') || request()->is('dokumen') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-signature"></i>
+                                <p>
+                                    TTD Digital [Beta]
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('tanda-tangan') }}"
+                                        class="nav-link {{ request()->is('tanda-tangan') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Manage Tanda Tangan</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('dokumen') }}"
+                                        class="nav-link {{ request()->is('dokumen') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Dokumen</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        
                         {{-- <li class="nav-item">
                             <a href="{{ route('generate-surat') }}"
                                 class="nav-link {{ request()->is('generate-surat') ? 'active' : '' }}">
@@ -205,35 +237,7 @@
                                 </p>
                             </a>
                         </li> --}}
-                        {{-- <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-envelope"></i>
-                                <p>
-                                    Surat Keluar
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('surat-keluar', ['type' => 'd1']) }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Direksi D1</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('surat-keluar', ['type' => 'd2']) }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Direksi D2</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('surat-keluar', ['type' => 'd3']) }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Direksi D3</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li> --}}
+
                         @if (Auth::user()->role === 1)
                             <li class="nav-item">
                                 <a href="{{ route('divisi') }}"

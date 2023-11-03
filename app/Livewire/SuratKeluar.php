@@ -238,15 +238,20 @@ class SuratKeluar extends Component
         //get count surat
         $count = ModelsSuratKeluar::where('type', $type)->orderBy('no_surat', 'desc');
 
+        // dd($count->count());
+
         if ($count->count() == 0) {
             $count = 1;
         } else {
             //ambil no_surat lalu explode / index 0
             $count = $count->latest()->first()->no_surat;
-            $count = explode('/', $count)[0] + 1;
+            // dd($count);
+            //remove abjad by regex
+            $count = explode('/', $count)[0];
+            $count = preg_replace('/[^0-9]/', '', $count);
+            //increment count
+            $count = $count + 1;
         }
-
-        // dd($count);
 
 
         //format count 001, dll until 100
@@ -522,7 +527,7 @@ class SuratKeluar extends Component
             $res = json_decode($res);
             return [
                 'success' => true,
-                'message' => $res->message
+                'message' => $res->msg
             ];
         } catch (\Throwable $th) {
             //throw $th;
