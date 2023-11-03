@@ -46,6 +46,20 @@ Route::middleware(['auth'])->group(function () {
         return view('edit-profile');
     })->name('edit-profile');
 
+    Route::get('kode-aset', function () {
+        return view('kode-aset');
+    })->name('kode-aset');
+    Route::get('asset', function () {
+        return view('asset');
+    })->name('asset');
+    Route::get('inventaris', function () {
+        return view('inventaris');
+    })->name('inventaris');
+
+    Route::get('pengaduan', function () {
+        return view('pengaduan');
+    })->name('pengaduan');
+
     //LOGOUT
     Route::post('logout', [Login::class, 'logout'])->name('logout');
 });
