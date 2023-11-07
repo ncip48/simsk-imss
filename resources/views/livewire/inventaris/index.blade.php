@@ -1,6 +1,7 @@
 <div class="content-wrapper">
     @include('livewire.inventaris.create')
     @include('livewire.inventaris.delete')
+    @include('liveWire.inventaris.import')
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
@@ -31,12 +32,12 @@
                             </button> --}}
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    <button type="button" class="btn btn-primary mb-2" data-toggle="modal"
                                         data-target="#inventarisModal">
                                         Tambah Inventaris {{ $tipe }}
                                     </button>
                                     @foreach ($kode_asets as $kode)
-                                        <button type="button" class="btn btn-success"
+                                        <button type="button" class="btn btn-success mb-2"
                                             wire:click="changeTipe({{ $kode }})">
                                             {{ $kode->nama }}
                                         </button>
@@ -45,9 +46,13 @@
                                 </div>
                                 {{-- import button with icon  --}}
                                 <div>
-                                    <button data-toggle="modal" data-target="#inventarisImport" class="btn btn-warning">
+                                    <button data-toggle="modal" data-target="#asetImport" class="btn btn-warning mb-2">
                                         <i class="fas fa-file-import"></i>
                                         Import
+                                    </button>
+                                    <button wire:click="export" class="btn btn-success mb-2">
+                                        <i class="fas fa-file-export"></i>
+                                        Export
                                     </button>
                                 </div>
                             </div>
@@ -91,11 +96,11 @@
                                             <td>{{ $tanggal_perolehan }}</td>
                                             <td>{{ $item->keterangan }}</td>
                                             <td>
-                                                <button type="button" wire:click="editinventaris({{ $item->id }})"
-                                                    class="btn btn-sm btn-warning" data-toggle="modal"
+                                                <button type="button" wire:click="editAset({{ $item->id }})"
+                                                    class="btn btn-sm btn-warning mb-2" data-toggle="modal"
                                                     data-target="#inventarisModal">Edit</button>
-                                                <button class="btn btn-sm btn-danger"
-                                                    wire:click="deleteinventaris({{ $item->id }})"
+                                                <button class="btn btn-sm btn-danger mb-2"
+                                                    wire:click="deleteAset({{ $item->id }})"
                                                     data-toggle="modal" data-target="#deleteinventarisModal">Hapus</button>
                                             </td>
                                         </tr>

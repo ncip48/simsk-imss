@@ -1,6 +1,7 @@
 <div class="content-wrapper">
     @include('livewire.aset.create')
     @include('livewire.aset.delete')
+    @include('liveWire.aset.import')
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
@@ -27,12 +28,12 @@
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    <button type="button" class="btn btn-primary mb-2" data-toggle="modal"
                                         data-target="#asetModal">
                                         Tambah Aset {{ $tipe }}
                                     </button>
                                     @foreach ($kode_asets as $kode)
-                                        <button type="button" class="btn btn-success"
+                                        <button type="button" class="btn btn-success mb-2"
                                             wire:click="changeTipe({{ $kode }})">
                                             {{ $kode->nama }}
                                         </button>
@@ -40,9 +41,13 @@
                                 </div>
                                 {{-- import button with icon  --}}
                                 <div>
-                                    <button data-toggle="modal" data-target="#asetImport" class="btn btn-warning">
+                                    <button data-toggle="modal" data-target="#asetImport" class="btn btn-warning mb-2">
                                         <i class="fas fa-file-import"></i>
                                         Import
+                                    </button>
+                                    <button wire:click="export" class="btn btn-success mb-2">
+                                        <i class="fas fa-file-export"></i>
+                                        Export
                                     </button>
                                 </div>
                             </div>
@@ -90,9 +95,9 @@
                                             <td>{{ $item->keterangan }}</td>
                                             <td>
                                                 <button type="button" wire:click="editAset({{ $item->id }})"
-                                                    class="btn btn-sm btn-warning" data-toggle="modal"
+                                                    class="btn btn-sm btn-warning mb-2" data-toggle="modal"
                                                     data-target="#asetModal">Edit</button>
-                                                <button class="btn btn-sm btn-danger"
+                                                <button class="btn btn-sm btn-danger mb-2"
                                                     wire:click="deleteAset({{ $item->id }})" data-toggle="modal"
                                                     data-target="#deleteAsetModal">Hapus</button>
                                             </td>

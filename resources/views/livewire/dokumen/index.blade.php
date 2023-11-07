@@ -44,7 +44,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($documents as $document)
+                                    @forelse ($documents as $document)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $document->title }}</td>
@@ -70,7 +70,11 @@
                                                     data-target="#deleteDocumentModal">Hapus</button>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center">Tidak ada data</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                             {{ $documents->links('vendor.pagination.bootstrap-4') }}

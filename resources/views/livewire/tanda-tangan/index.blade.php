@@ -43,7 +43,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($signatures as $signature)
+                                    @forelse ($signatures as $signature)
                                         <tr>
                                             <td style="vertical-align: middle">{{ $loop->iteration }}</td>
                                             <td style="vertical-align: middle">{{ $signature->issuer }}</td>
@@ -55,7 +55,11 @@
                                                     data-target="#deleteSignatureModal">Hapus</button>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center">Tidak ada data</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                             {{ $signatures->links('vendor.pagination.bootstrap-4') }}

@@ -38,31 +38,50 @@
                                         <th>#</th>
                                         <th>Nama Barang</th>
                                         <th>Kerusakan</th>
-                                        <th>Deskripsi</th>
+                                        <th>Lokasi</th>
                                         <th>Tanggal Pelaporan</th>
                                         <th>Nama Pelapor</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   <tr>
+                                    @forelse ($asets as $item)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item->nama_barang }}</td>
+                                            <td>{{ $item->kerusakan }}</td>
+                                            <td>{{ $item->lokasi }}</td>
+                                            <td>{{ $item->tanggal_pelaporan }}</td>
+                                            <td>{{ $item->nama_pelapor }}</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-success">Approved</button>
+                                                <button class="btn btn-sm btn-danger">Reject</button>
+                                            </td>
+                                        </tr>
+                                        
+                                    @empty
+                                        
+                                    @endforelse
+
+
+                                   {{-- <tr>
                                         <td>1</td>
                                         <td>123</td>
                                         <td>123</td>
                                         <td>123</td>
                                         <td>123</td>
                                         <td>123</td>
-                                        <td>
+                                        <td> --}}
                                             {{-- <button type="button" wire:click="editpengaduan({{ $pengaduan->id_pengaduan }})"
                                                 class="btn btn-sm btn-warning" data-toggle="modal"
                                                 data-target="#pengaduanModal">Edit</button>
                                             <button class="btn btn-sm btn-danger"
                                                 wire:click="deletepengaduan({{ $pengaduan->id_pengaduan }})"
                                                 data-toggle="modal" data-target="#deletepengaduanModal">Hapus</button> --}}
-                                                <button class="btn btn-sm btn-success">Approved</button>
+                                                {{-- <button class="btn btn-sm btn-success">Approved</button>
                                                 <button class="btn btn-sm btn-danger">Reject</button>
                                         </td>
-                                   </tr>
+                                   </tr> --}}
                                 </tbody>
                             </table>
                             {{-- {{ $pengaduans->links('vendor.pagination.bootstrap-4') }} --}}

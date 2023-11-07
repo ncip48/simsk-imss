@@ -147,6 +147,9 @@
                         </li>
 
                         {{-- Aset Inventaris --}}
+
+                        @if (Auth::user()->id_divisi === 5)
+                            
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-archive"></i>
@@ -198,6 +201,7 @@
                                 </li>
                             </ul>
                         </li>
+                        @endif
 
                         {{-- TTD Surat --}}
                         <li class="nav-item {{ request()->is('tanda-tangan') || request()->is('dokumen') ? 'menu-open' : '' }}">

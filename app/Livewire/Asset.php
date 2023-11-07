@@ -4,12 +4,16 @@ namespace App\Livewire;
 
 use App\Models\Aset as ModelsAset;
 use App\Models\KodeAset;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Asset extends Component
 {
-    use WithPagination;
+    use WithPagination, WithFileUploads;
     public $kode_asets = [];
     public $tipeUrl = 'tanah';
     public $kode_aset = '180-1';
@@ -186,6 +190,25 @@ class Asset extends Component
 
         $this->dispatch('close-modal');
     }
+
+    // public $fileUpload;
+    // public function importAset(Request $request)
+    // {
+    //     $this->validate([
+    //         'fileUpload' => 'required|mimes:xls,xlsx'
+    //     ]);
+
+    //     $file = $this->fileUpload;
+    //     $fileName = time() . '.' . $file->getClientOriginalExtension();
+    //     $file->storeAs('public', $fileName);
+
+    //     Excel::import(new \App\Imports\AsetImport, $fileName);
+
+    //     $this->dispatch('alert', [
+    //         'type' => 'success',
+    //         'message' => "Aset berhasil diimport!"
+    //     ]);
+    // }
 
     public function resetInputs()
     {
