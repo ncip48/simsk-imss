@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Aset as ModelsAset;
 use App\Models\KodeAset;
+use App\Models\PenghapusanAset;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
@@ -173,8 +174,23 @@ class Asset extends Component
         $this->aset = $aset;
     }
 
-    public function destroyAset(ModelsAset $aset)
-    {
+    public function destroyAset()
+    { 
+        $aset = $this->aset;
+        PenghapusanAset::insert([
+            'kode_aset_id' => $aset->aset_id,
+            'tipe' => $aset->tipe,
+            'nomor_aset' => $aset->nomor_aset,
+            'jenis_aset' => $aset->jenis_aset,
+            'merek' => $aset->merek,
+            'no_seri' => $aset->no_seri,
+            'kondisi' => $aset->kondisi,
+            'tanggal_perolehan' => $aset->tanggal_perolehan,
+            'lokasi' => $aset->lokasi,
+            'pengguna' => $aset->pengguna,
+            'keterangan' => $aset->keterangan,
+        ]);
+
         if ($this->aset) {
             $this->aset->delete();
             $this->dispatch('alert', [

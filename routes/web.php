@@ -63,6 +63,10 @@ Route::middleware(['auth'])->group(function () {
         return view('inventaris');
     })->name('inventaris');
 
+    Route::get('penghapusan-aset', function () {
+        return view('penghapusan-aset');
+    })->name('penghapusan-aset');
+
     Route::get('pengaduan', function () {
         return view('pengaduan');
     })->name('pengaduan');

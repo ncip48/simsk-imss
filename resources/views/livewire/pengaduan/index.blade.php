@@ -45,7 +45,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($asets as $item)
+                                    {{-- @forelse ($asets as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->nama_barang }}</td>
@@ -61,7 +61,7 @@
                                         
                                     @empty
                                         
-                                    @endforelse
+                                    @endforelse --}}
 
 
                                    {{-- <tr>
