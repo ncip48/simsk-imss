@@ -23,3 +23,4 @@ class Aset extends Model
         'keterangan',
     ];
 }
+

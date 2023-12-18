@@ -170,21 +170,12 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{route('penghapusan-aset')}}"
-                                        class="nav-link {{ request()->is('penghapusan-aset') ? 'active' : '' }}">
-                                        <i class="nav-icon far fa-circle nav-icon"></i>
-                                        <p>
-                                           Penghapusan Aset
-                                        </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
                                     <a href="{{ route('asset') }}"
                                         class="nav-link {{ request()->is('asset') ? 'active' : '' }}">
                                         {{-- <i class="nav-icon fas fa-archive"></i> --}}
                                         <i class="nav-icon far fa-circle nav-icon"></i>
                                         <p>
-                                            Asset SDM
+                                            Aset SDM
                                         </p>
                                     </a>
                                 </li>
@@ -199,12 +190,21 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="{{route('penghapusan-aset')}}"
+                                        class="nav-link {{ request()->is('penghapusan-aset') ? 'active' : '' }}">
+                                        <i class="nav-icon far fa-circle nav-icon"></i>
+                                        <p>
+                                           Penghapusan Aset
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ route('pengaduan') }}"
                                         class="nav-link {{ request()->is('pengaduan') ? 'active' : '' }}">
                                         {{-- <i class="nav-icon fas fa-exclamation"></i> --}}
                                         <i class="nav-icon far fa-circle nav-icon"></i>
                                         <p>
-                                            Pengaduan Asset
+                                            Pengaduan Aset
                                         </p>
                                     </a>
                                 </li>

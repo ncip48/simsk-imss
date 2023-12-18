@@ -207,24 +207,36 @@ class Asset extends Component
         $this->dispatch('close-modal');
     }
 
-    // public $fileUpload;
-    // public function importAset(Request $request)
-    // {
-    //     $this->validate([
-    //         'fileUpload' => 'required|mimes:xls,xlsx'
-    //     ]);
+    public $fileUpload;
+    public function importAset(Request $request)
+    {
+        $this->validate([
+            'fileUpload' => 'required|mimes:xls,xlsx'
+        ]);
 
-    //     $file = $this->fileUpload;
-    //     $fileName = time() . '.' . $file->getClientOriginalExtension();
-    //     $file->storeAs('public', $fileName);
+        $file = $this->fileUpload;
+        $fileName = time() . '.' . $file->getClientOriginalExtension();
+        $file->storeAs('public', $fileName);
 
-    //     Excel::import(new \App\Imports\AsetImport, $fileName);
+        // Excel::import(new \App\Imports\AsetImport, $fileName);
 
-    //     $this->dispatch('alert', [
-    //         'type' => 'success',
-    //         'message' => "Aset berhasil diimport!"
-    //     ]);
-    // }
+        // $this->dispatch('alert', [
+        //     'type' => 'success',
+        //     'message' => "Aset berhasil diimport!"
+        // ]);
+        return $this->dispatch('alert', [
+            'type' => 'info',
+            'message' => "Fitur masih dalam tahap pengembangan, see u~"
+        ]);
+    }
+
+    public function export()
+    {
+        return $this->dispatch('alert', [
+            'type' => 'info',
+            'message' => "Fitur masih dalam tahap pengembangan, see u~"
+        ]);
+    }
 
     public function resetInputs()
     {

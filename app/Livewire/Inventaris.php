@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Aset;
 use App\Models\Aset as ModelsAset;
+use App\Models\PenghapusanAset;
 use App\Models\KodeAset;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -172,6 +173,21 @@ class Inventaris extends Component
 
     public function destroyAset(ModelsAset $aset)
     {
+        $aset = $this->aset;
+        PenghapusanAset::insert([
+            'kode_aset_id' => $aset->aset_id,
+            'tipe' => $aset->tipe,
+            'nomor_aset' => $aset->nomor_aset,
+            'jenis_aset' => $aset->jenis_aset,
+            'merek' => $aset->merek,
+            'no_seri' => $aset->no_seri,
+            'kondisi' => $aset->kondisi,
+            'tanggal_perolehan' => $aset->tanggal_perolehan,
+            'lokasi' => $aset->lokasi,
+            'pengguna' => $aset->pengguna,
+            'keterangan' => $aset->keterangan,
+        ]);
+
         if ($this->aset) {
             $this->aset->delete();
             $this->dispatch('alert', [
@@ -186,6 +202,37 @@ class Inventaris extends Component
         }
 
         $this->dispatch('close-modal');
+    }
+
+    public $fileUpload;
+    // public function importAset(Request $request)
+    // {
+    //     $this->validate([
+    //         'fileUpload' => 'required|mimes:xls,xlsx'
+    //     ]);
+
+    //     $file = $this->fileUpload;
+    //     $fileName = time() . '.' . $file->getClientOriginalExtension();
+    //     $file->storeAs('public', $fileName);
+
+    //     // Excel::import(new \App\Imports\AsetImport, $fileName);
+
+    //     // $this->dispatch('alert', [
+    //     //     'type' => 'success',
+    //     //     'message' => "Aset berhasil diimport!"
+    //     // ]);
+    //     return $this->dispatch('alert', [
+    //         'type' => 'info',
+    //         'message' => "Fitur masih dalam tahap pengembangan, see u~"
+    //     ]);
+    // }
+
+    public function export()
+    {
+        return $this->dispatch('alert', [
+            'type' => 'info',
+            'message' => "Fitur masih dalam tahap pengembangan, see u~"
+        ]);
     }
 
     public function closeModal()

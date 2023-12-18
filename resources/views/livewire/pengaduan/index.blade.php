@@ -45,6 +45,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr>
+                                        <td class="text-center" colspan="7"><h2>Fitur masih dalam pengembangan</h2></td>
+                                    </tr>
                                     {{-- @forelse ($asets as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
